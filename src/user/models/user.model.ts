@@ -13,4 +13,7 @@ export class UserModel {
 
   @HideField()
   password: string;
+
+  @Field(() => String)
+  accessToken: string;
 }

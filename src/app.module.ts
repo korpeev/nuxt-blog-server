@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -12,13 +13,13 @@ import { AuthService } from './auth/auth.service';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      context: ({ req }) => ({ req }),
     }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     UserModule,
+    AuthModule,
   ],
-  controllers: [],
-  providers: [AuthService],
 })
 export class AppModule {}
