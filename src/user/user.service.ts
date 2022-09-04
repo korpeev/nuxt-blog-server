@@ -12,6 +12,9 @@ export class UserService {
       this.prismaService.user.create({
         data: {
           ...userData,
+          posts: {},
+          likedPosts: {},
+          commentedPosts: {},
         },
       }),
     );

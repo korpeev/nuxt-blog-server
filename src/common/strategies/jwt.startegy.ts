@@ -4,7 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from '@/common/types';
 import { UserService } from '@/user/user.service';
-import { tap } from 'rxjs';
+import { lastValueFrom, tap } from 'rxjs';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -24,8 +24,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (expTimestamp < Date.now())
       throw new UnauthorizedException('token expired');
 
-    return this.userService
-      .findUserByEmail(payload.email)
-      .pipe(tap((user) => delete user.password));
+    return await lastValueFrom(this.userService.findUserByEmail(payload.email));
   }
 }

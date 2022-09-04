@@ -15,4 +15,37 @@ model User {
     username String @unique
     password String
     email String @unique
+    posts Post[]
+    commentedPosts Comment[]
+    likedPosts Like[]
+}
+model Post {
+    id Int @id @default(autoincrement())
+    title String
+    content String
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    userId Int
+    user User @relation(fields: [userId], references: [id])
+    comments Comment[]
+    likes Like[]
+}
+
+model Comment {
+    id Int @id @default(autoincrement())
+    content String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId Int
+    user User @relation(fields: [userId], references: [id])
+    postId Int
+    post Post @relation(fields: [postId], references: [id])
+}
+
+model Like {
+    id Int @id @default(autoincrement())
+    userId Int
+    user User @relation(fields: [userId], references: [id])
+    postId Int
+    post Post @relation(fields: [postId], references: [id])
 }

@@ -27,7 +27,10 @@ export class AuthService {
           if (user) throw new BadRequestException('user already exist');
           return this.genHash(userData.password).pipe(
             switchMap((hashedPassword) =>
-              this.userService.create({ ...user, password: hashedPassword }),
+              this.userService.create({
+                ...userData,
+                password: hashedPassword,
+              }),
             ),
             map((user) => ({
               ...user,
